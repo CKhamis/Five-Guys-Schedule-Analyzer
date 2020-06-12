@@ -29,6 +29,6 @@ public class Day implements Comparable<Day> {
 		return date.hashCode()+shift.hashCode();
 	}
 	public String toString() {
-		return date.toString() + " | " + shift;
+		return date.toString() + " " + shift;
 	}
 }

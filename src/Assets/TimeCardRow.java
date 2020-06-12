@@ -1,20 +1,34 @@
 package Assets;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.TreeSet;
 
-public class TimeCardRow extends ArrayList<Day> implements Comparable<TimeCardRow> {
+public class TimeCardRow extends TreeSet<Day> implements Comparable<TimeCardRow> {
 	private String name;
-	private boolean isMinor;
+	private boolean isMinor,  isManager;
 
-	public TimeCardRow(String name, ArrayList<Day> week) {
+	public TimeCardRow(String name, boolean isManager, TreeSet<Day> week) {
 		super(week);
 		this.name = name;
+		this.isManager = isManager;
 		if (name.contains("*")) {
 			isMinor = true;
 			this.name = name.substring(0, name.length() - 1);
 		} else {
 			isMinor = false;
+		}
+	}
+	public void merge(TimeCardRow other){
+		for(Day r : other){
+			this.add(r);
+		}
+
+		if(this.isManager != other.isManager && this.first().getDate().isBefore(other.first().getDate())){
+			this.isManager = other.isManager;
+		}
+
+		if(this.isMinor != other.isMinor && this.first().getDate().isBefore(other.first().getDate())){
+			this.isMinor = other.isMinor;
 		}
 	}
 
@@ -25,36 +39,52 @@ public class TimeCardRow extends ArrayList<Day> implements Comparable<TimeCardRo
 	public boolean isMinor() {
 		return isMinor;
 	}
-
-	public Day getShift(int i) {
-		if (i >= 0 && i <= this.size()) {
-			return this.get(i);
-		} else {
-			return null;
-		}
+	public boolean isManager(){
+		return isManager;
 	}
 
-	public ArrayList<Day> getTimeCard() {
-		return this;
+	public Day getShift(LocalDate date) {
+		for(Day r : this){
+			if(date.equals(r.getDate())){
+				return r;
+			}
+		}
+		return null;
 	}
 
 	public LocalDate getFirstDay() {
-		return this.get(0).getDate();
+		return this.first().getDate();
 	}
 	public LocalDate getLastDay() {
-		return this.get(this.size()-1).getDate();
+		return this.last().getDate();
 	}
 
 	public int hashCode() {
-		return name.hashCode() + this.hashCode();
+		return this.name.hashCode() + this.first().getDate().hashCode() + this.last().getDate().hashCode();
+	}
+
+	public boolean equals(Object other){
+		return (this.hashCode() == other.hashCode());
 	}
 
 	public int compareTo(TimeCardRow other) {
-		if (this.name.compareTo(other.name) != 0) {
-			return this.getFirstDay().compareTo(other.getFirstDay());
-		} else {
-			return this.name.compareTo(other.name);
-		}
+		int comp1 = this.getName().compareTo(other.getName());
+		if(comp1 == 0){
+				int comp2 = this.getFirstDay().compareTo(other.getFirstDay());
+				if(comp2 == 0){
+					if(this.isMinor == other.isMinor){
+					return 0;
+					} else if(this.isMinor == true && other.isMinor == false){
+					return -1;
+					} else{
+					return 1;
+					}
+			}else{
+				return comp2;
+			}
+		}else{
+			return comp1;
+		 }
 	}
 	public String toString(){
 		String val =  this.name + " |\t" + this.isMinor + " ";
