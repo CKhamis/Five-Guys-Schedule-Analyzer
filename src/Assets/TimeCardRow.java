@@ -93,4 +93,31 @@ public class TimeCardRow extends TreeSet<Day> implements Comparable<TimeCardRow>
 		}
 		return val;
 	}
+
+	/**
+     * Gets the first shift the person has worked
+     * @return a Day object that represents the person's first day
+     */
+    public Day getFirstShift(){
+        for(Day r : this){
+            if(!r.getShift().contains("off") && !r.getShift().contains("OFF") && !r.getShift().equalsIgnoreCase("off")){
+                return r;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the last shift the person has worked
+     * @return a Day object that represents the person's last day
+     */
+    public Day getLastShift(){
+        Day currentLast = this.first();
+        for(Day r : this){
+            if(!r.getShift().contains("off") && !r.getShift().contains("OFF") && !r.getShift().equalsIgnoreCase("off")){
+                currentLast = r;
+            }
+        }
+        return currentLast;
+    }
 }

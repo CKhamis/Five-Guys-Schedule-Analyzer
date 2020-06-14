@@ -1,11 +1,11 @@
 package Imperial;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 import Assets.FullShiftList;
 import scheduleAnalyzer.ScheduleAnalyzer;
-import scheduleReader.ScheduleInterpreterA;
 import scheduleAnalyzer.WeeklyShiftSheet;
 
 public class Starter {
@@ -18,8 +18,12 @@ public class Starter {
 		paths.add("C:/users/costi/Onedrive/Desktop/Almaden Schedule 4.1 to 4.7.csv");
 		paths.add("C:/users/costi/Onedrive/Desktop/Almaden Schedule 4.8 to 4.14.csv");
 		paths.add("C:/users/costi/Onedrive/Desktop/Almaden Schedule 4.15 to 4.21.csv");
+
 		TreeSet<WeeklyShiftSheet> r = ScheduleAnalyzer.getShiftSheetsFromPaths(paths);
 
 		FullShiftList s = ScheduleAnalyzer.shiftMerge(r);
+		System.out.println(s.namesToString());
+		System.out.println(s.getEmploymentRange(s.get("Alan")));
+		System.out.println(s.getNextAnniversary().getName() + " " + s.getNextAnniversary().getFirstShift());
 	}
 }
