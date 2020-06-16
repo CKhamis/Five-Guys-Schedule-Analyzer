@@ -66,7 +66,7 @@ public class FullShiftList extends TreeSet<TimeCardRow> {
                 long days = Math.abs(dateNextYear.until(today, ChronoUnit.DAYS));
 
                 if(days < daysUntil && !r.getFirstDay().equals(LocalDate.parse("2019-03-04"))){
-                    System.out.println("Now " + days);
+                    //System.out.println("Now " + days);
                     currentClosest = r;
                     daysUntil = (int) days;
                 }

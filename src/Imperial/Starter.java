@@ -20,7 +20,6 @@ public class Starter {
 
 		FullShiftList s = ScheduleAnalyzer.shiftMerge(r);
 		System.out.println(s.namesToString());
-		System.out.println(s.getEmploymentRange(s.get("Alan")));
 		System.out.println(s.getNextAnniversary().getName() + " " + s.getNextAnniversary().getFirstShift());
 	}
 
